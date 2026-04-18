@@ -20,11 +20,9 @@ MODEL_DIR = BACKEND_ROOT / "models"
 
 # Key Files
 CSV_FILE = DATA_DIR / "step3_clustered_data.csv"
-BANGLABERT_MODEL = MODEL_DIR / "best_advanced_model"
 
-# Fallback to HuggingFace if local model not found
-if not BANGLABERT_MODEL.exists():
-    BANGLABERT_MODEL = "sagorsarker/bangla-bert-base"
+# Use trained model from HuggingFace Hub
+BANGLABERT_MODEL = "shksabbir7/bengali-movie-review-classifier"
 
 # Phase 3 Directories
 LOGS_DIR = BACKEND_ROOT / "logs"
@@ -41,7 +39,7 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "")
 
 # Model Configuration
 GEMINI_MODEL = "gemini-3.1-flash-lite-preview"
-BANGLABERT_TOKENIZER = "sagorsarker/bangla-bert-base"
+BANGLABERT_TOKENIZER = "shksabbir7/bengali-movie-review-classifier"
 
 # Agent Configuration
 MAX_RETRIES = 3
@@ -101,16 +99,16 @@ def validate_setup() -> bool:
     """Validate that all required files and configurations exist"""
     checks = {
         "CSV File": CSV_FILE.exists(),
-        "BanglaBERT Model": BANGLABERT_MODEL.exists(),
+        "BanglaBERT Model (HuggingFace)": isinstance(BANGLABERT_MODEL, str) and BANGLABERT_MODEL.startswith("shksabbir7/"),
         "Google API Key": bool(GOOGLE_API_KEY),
         "Logs Directory": LOGS_DIR.exists(),
     }
     
-    print("🔍 Configuration Validation:")
+    print("Configuration Validation:")
     all_valid = True
     for name, status in checks.items():
-        symbol = "✅" if status else "❌"
-        print(f"  {symbol} {name}")
+        symbol = "OK" if status else "FAIL"
+        print(f"  [{symbol}] {name}")
         if not status:
             all_valid = False
     
@@ -118,7 +116,7 @@ def validate_setup() -> bool:
 
 
 if __name__ == "__main__":
-    print("📋 Phase 3 Configuration:")
+    print("Phase 3 Configuration:")
     print(f"  Project Root: {PROJECT_ROOT}")
     print(f"  CSV File: {CSV_FILE}")
     print(f"  Model Path: {BANGLABERT_MODEL}")

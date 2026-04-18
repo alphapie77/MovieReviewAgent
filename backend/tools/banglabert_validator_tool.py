@@ -42,18 +42,44 @@ class BanglaBERTValidatorTool(BaseTool):
         # Load tokenizer
         self.logger.info("Loading BanglaBERT tokenizer...")
         try:
-            # Try loading from model path first
-            self.tokenizer = AutoTokenizer.from_pretrained(cfg.BANGLABERT_MODEL)
-        except:
+            # Check if local model exists
+            if isinstance(cfg.BANGLABERT_MODEL, Path) and cfg.BANGLABERT_MODEL.exists():
+                self.tokenizer = AutoTokenizer.from_pretrained(
+                    str(cfg.BANGLABERT_MODEL),
+                    local_files_only=True
+                )
+            else:
+                # Use base model tokenizer
+                self.tokenizer = AutoTokenizer.from_pretrained(cfg.BANGLABERT_TOKENIZER)
+        except Exception as e:
+            self.logger.warning(f"Failed to load tokenizer from model path: {e}")
             # Fallback to base model
             self.tokenizer = AutoTokenizer.from_pretrained(cfg.BANGLABERT_TOKENIZER)
         
         # Load trained model
         self.logger.info(f"Loading trained model from {cfg.BANGLABERT_MODEL}")
-        self.model = AutoModelForSequenceClassification.from_pretrained(
-            cfg.BANGLABERT_MODEL,
-            num_labels=3  # 3 personas
-        )
+        
+        # Check if it's a local path or HuggingFace repo
+        if isinstance(cfg.BANGLABERT_MODEL, Path) and cfg.BANGLABERT_MODEL.exists():
+            # Local model
+            self.model = AutoModelForSequenceClassification.from_pretrained(
+                str(cfg.BANGLABERT_MODEL),
+                num_labels=3,
+                local_files_only=True
+            )
+        else:
+            # HuggingFace model (string path)
+            model_name = str(cfg.BANGLABERT_MODEL) if not isinstance(cfg.BANGLABERT_MODEL, str) else cfg.BANGLABERT_MODEL
+            
+            # If it looks like a file path, use base model instead
+            if '/' in model_name and not model_name.count('/') == 1:
+                self.logger.warning(f"Invalid model path: {model_name}, using base model")
+                model_name = "sagorsarker/bangla-bert-base"
+            
+            self.model = AutoModelForSequenceClassification.from_pretrained(
+                model_name,
+                num_labels=3
+            )
         self.model.to(self.device)
         self.model.eval()
         
