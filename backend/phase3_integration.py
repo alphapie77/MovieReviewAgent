@@ -22,9 +22,11 @@ else:
     if phase3_env.exists():
         load_dotenv(phase3_env)
 
-# Add Phase 3 to path
-sys.path.insert(0, str(PHASE3_ROOT / "agents"))
-sys.path.insert(0, str(PHASE3_ROOT / "config"))
+# Add backend paths
+BACKEND_ROOT = Path(__file__).parent
+sys.path.insert(0, str(BACKEND_ROOT / "agents"))
+sys.path.insert(0, str(BACKEND_ROOT / "config"))
+sys.path.insert(0, str(BACKEND_ROOT / "tools"))
 
 from workflow import run_workflow
 

@@ -50,3 +50,6 @@ Thumbs.db
 # Model cache
 chroma_db/
 outputs/
+
+# Model files (too large for GitHub)
+backend/models/
