@@ -1,5 +1,5 @@
 """
-Shared CSS Theme - Clean Modern Design (No Blur)
+Shared CSS Theme - Responsive & Compact Design
 """
 
 SHARED_CSS = """
@@ -16,43 +16,43 @@ SHARED_CSS = """
     
     .header-gradient {
         background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-        padding: 2.5rem 2rem;
-        border-radius: 20px;
+        padding: 1.5rem 1.5rem;
+        border-radius: 15px;
         color: white;
         text-align: center;
-        margin-bottom: 2rem;
-        box-shadow: 0 10px 40px rgba(59, 130, 246, 0.3);
+        margin-bottom: 1.5rem;
+        box-shadow: 0 8px 30px rgba(59, 130, 246, 0.3);
     }
     
     .header-gradient h1 {
-        font-size: 3rem;
+        font-size: 1.8rem;
         font-weight: 700;
         margin: 0;
         color: white;
     }
     
     .header-gradient p {
-        font-size: 1.2rem;
-        margin: 0.8rem 0 0 0;
+        font-size: 0.95rem;
+        margin: 0.5rem 0 0 0;
         color: rgba(255, 255, 255, 0.95);
     }
     
     .stat-card {
         background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-        padding: 2rem 1.5rem;
-        border-radius: 15px;
-        box-shadow: 0 8px 30px rgba(59, 130, 246, 0.4);
+        padding: 1.2rem 1rem;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
         transition: all 0.3s ease;
         text-align: center;
     }
     
     .stat-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 15px 50px rgba(59, 130, 246, 0.6);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 35px rgba(59, 130, 246, 0.6);
     }
     
     .stat-number {
-        font-size: 3rem;
+        font-size: 1.8rem;
         font-weight: 700;
         color: white;
         margin: 0;
@@ -60,198 +60,219 @@ SHARED_CSS = """
     
     .stat-label {
         color: rgba(255, 255, 255, 0.9);
-        font-size: 1.1rem;
-        margin-top: 0.5rem;
+        font-size: 0.85rem;
+        margin-top: 0.3rem;
         font-weight: 500;
     }
     
     .feature-card {
         background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-        padding: 2rem;
-        border-radius: 15px;
+        padding: 1.3rem;
+        border-radius: 12px;
         height: 100%;
         transition: all 0.3s ease;
-        box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4);
+        box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
     }
     
     .feature-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 15px 50px rgba(139, 92, 246, 0.6);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 35px rgba(139, 92, 246, 0.6);
     }
     
     .feature-card h3 {
         color: white;
-        font-size: 1.6rem;
-        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        margin-bottom: 0.8rem;
         font-weight: 600;
     }
     
     .feature-card p {
         color: rgba(255, 255, 255, 0.9);
-        font-size: 1.1rem;
-        line-height: 1.7;
+        font-size: 0.85rem;
+        line-height: 1.5;
     }
     
     .persona-card {
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        padding: 2rem;
-        border-radius: 15px;
+        padding: 1.3rem;
+        border-radius: 12px;
         height: 100%;
         transition: all 0.3s ease;
-        box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4);
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
     }
     
     .persona-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 15px 50px rgba(16, 185, 129, 0.6);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 35px rgba(16, 185, 129, 0.6);
     }
     
     .persona-card h3 {
         color: white;
-        font-size: 1.7rem;
-        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        margin-bottom: 0.8rem;
         font-weight: 600;
     }
     
     .persona-card ul, .persona-card p {
         color: rgba(255, 255, 255, 0.95);
-        font-size: 1.05rem;
-        line-height: 1.9;
+        font-size: 0.85rem;
+        line-height: 1.6;
     }
     
     .result-card {
         background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
         border: 2px solid #3b82f6;
-        padding: 2rem;
-        border-radius: 15px;
-        box-shadow: 0 8px 30px rgba(59, 130, 246, 0.2);
+        padding: 1.3rem;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.2);
         margin: 1rem 0;
         color: white;
     }
     
+    .result-card h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .result-card p {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+    
     .metric-box {
         background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-        padding: 1.5rem;
-        border-radius: 12px;
+        padding: 1rem;
+        border-radius: 10px;
         text-align: center;
-        box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
     }
     
     .metric-box h3 {
         color: white;
-        font-size: 2rem;
+        font-size: 1.5rem;
         margin: 0;
         font-weight: 700;
+    }
+    
+    .metric-box p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.8rem;
+        margin-top: 0.3rem;
     }
     
     .success-box {
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         color: white;
-        padding: 1.2rem;
-        border-radius: 12px;
+        padding: 0.9rem;
+        border-radius: 10px;
         margin: 1rem 0;
-        box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        font-size: 0.9rem;
     }
     
     .error-box {
         background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
         color: white;
-        padding: 1.2rem;
-        border-radius: 12px;
+        padding: 0.9rem;
+        border-radius: 10px;
         margin: 1rem 0;
-        box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+        box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        font-size: 0.9rem;
     }
     
     .warning-box {
         background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
         color: white;
-        padding: 1.2rem;
-        border-radius: 12px;
+        padding: 0.9rem;
+        border-radius: 10px;
         margin: 1rem 0;
-        box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
+        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        font-size: 0.9rem;
     }
     
     .info-box {
         background: rgba(59, 130, 246, 0.1);
         border: 2px solid #3b82f6;
-        border-radius: 15px;
-        padding: 2rem;
-        margin: 1.5rem 0;
+        border-radius: 12px;
+        padding: 1.3rem;
+        margin: 1.2rem 0;
         color: white;
     }
     
     .info-box h3 {
         color: #60a5fa;
-        font-size: 1.8rem;
+        font-size: 1.2rem;
         margin-top: 0;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
     }
     
     .info-box p {
         color: rgba(255, 255, 255, 0.9);
-        font-size: 1.1rem;
-        line-height: 1.8;
-        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 0.8rem;
     }
     
     .info-box ol {
         color: rgba(255, 255, 255, 0.9);
-        font-size: 1.1rem;
-        line-height: 1.8;
-        padding-left: 1.5rem;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        padding-left: 1.3rem;
     }
     
     .info-box ol li {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
     }
     
     .info-box ul {
-        margin-top: 0.5rem;
-        padding-left: 1.5rem;
+        margin-top: 0.4rem;
+        padding-left: 1.3rem;
     }
     
     .info-box ul li {
         color: rgba(255, 255, 255, 0.8);
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.4rem;
+        font-size: 0.85rem;
     }
     
     .persona-example {
         background: rgba(0, 0, 0, 0.3);
         border-left: 4px solid #8b5cf6;
-        padding: 1.5rem;
-        border-radius: 10px;
-        margin: 1rem 0;
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 0.8rem 0;
     }
     
     .persona-example p {
         color: rgba(255, 255, 255, 0.95);
         font-family: 'Noto Sans Bengali', sans-serif;
+        font-size: 0.9rem;
     }
     
     .stButton>button {
         width: 100%;
         background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
         color: white;
-        padding: 1rem 2rem;
-        border-radius: 12px;
+        padding: 0.8rem 1.5rem;
+        border-radius: 10px;
         font-weight: 600;
-        font-size: 1.1rem;
+        font-size: 0.95rem;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+        box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
         border: none;
     }
     
     .stButton>button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6);
         background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
     }
     
     h2 {
         color: #60a5fa;
-        font-size: 2rem;
+        font-size: 1.4rem;
         font-weight: 700;
-        margin: 2rem 0 1rem 0;
+        margin: 1.5rem 0 0.8rem 0;
     }
     
     [data-testid="stSidebar"] {
@@ -267,9 +288,9 @@ SHARED_CSS = """
         background: #ffffff !important;
         border: 2px solid #3b82f6 !important;
         color: #000000 !important;
-        border-radius: 10px !important;
-        font-size: 1.1rem !important;
-        padding: 0.8rem !important;
+        border-radius: 8px !important;
+        font-size: 0.9rem !important;
+        padding: 0.7rem !important;
     }
     
     .stTextInput>div>div>input::placeholder,
@@ -281,11 +302,52 @@ SHARED_CSS = """
     .stTextArea label {
         color: #60a5fa !important;
         font-weight: 600 !important;
-        font-size: 1.1rem !important;
+        font-size: 0.95rem !important;
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .header-gradient h1 {
+            font-size: 1.3rem;
+        }
+        
+        .header-gradient p {
+            font-size: 0.8rem;
+        }
+        
+        .stat-number {
+            font-size: 1.4rem;
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+        }
+        
+        .feature-card h3,
+        .persona-card h3 {
+            font-size: 0.95rem;
+        }
+        
+        .feature-card p,
+        .persona-card p {
+            font-size: 0.8rem;
+        }
+        
+        .result-card h3 {
+            font-size: 0.95rem;
+        }
+        
+        .result-card p {
+            font-size: 0.85rem;
+        }
+        
+        h2 {
+            font-size: 1.1rem;
+        }
     }
     
     ::-webkit-scrollbar {
-        width: 12px;
+        width: 10px;
     }
     
     ::-webkit-scrollbar-track {
@@ -294,7 +356,7 @@ SHARED_CSS = """
     
     ::-webkit-scrollbar-thumb {
         background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-        border-radius: 10px;
+        border-radius: 8px;
     }
 </style>
 """
