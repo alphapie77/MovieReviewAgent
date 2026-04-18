@@ -6,15 +6,15 @@ from pathlib import Path
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
 def download_model():
-    """Download BanglaBERT model if not exists"""
+    """Download trained BanglaBERT model from HuggingFace Hub"""
     model_path = Path(__file__).parent / "models" / "best_advanced_model"
     
     if not model_path.exists():
-        print("📥 Downloading BanglaBERT model...")
+        print("Downloading trained BanglaBERT model from HuggingFace Hub...")
         model_path.mkdir(parents=True, exist_ok=True)
         
-        # Download from HuggingFace
-        model_name = "sagorsarker/bangla-bert-base"
+        # Download trained model from HuggingFace Hub
+        model_name = "shksabbir7/bengali-movie-review-classifier"
         
         tokenizer = AutoTokenizer.from_pretrained(model_name)
         model = AutoModelForSequenceClassification.from_pretrained(
@@ -26,9 +26,9 @@ def download_model():
         tokenizer.save_pretrained(model_path)
         model.save_pretrained(model_path)
         
-        print("✅ Model downloaded successfully!")
+        print("Model downloaded successfully!")
     else:
-        print("✅ Model already exists")
+        print("Model already exists")
 
 if __name__ == "__main__":
     download_model()
