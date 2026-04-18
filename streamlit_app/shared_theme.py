@@ -303,14 +303,32 @@ SHARED_CSS = """
     }
     
     /* Form Inputs - Mobile First */
-    .stTextInput>div>div>input,
-    .stTextArea>div>div>textarea {
+    .stTextInput>div>div>input {
         background: #ffffff !important;
         border: 2px solid #3b82f6 !important;
         color: #000000 !important;
         border-radius: 8px !important;
         font-size: 0.85rem !important;
         padding: 0.6rem !important;
+    }
+    
+    /* Text Area Styling */
+    .stTextArea>div>div>textarea {
+        background: #ffffff !important;
+        border: 2px solid #3b82f6 !important;
+        color: #000000 !important;
+        border-radius: 8px !important;
+        font-size: 0.9rem !important;
+        padding: 0.8rem !important;
+        line-height: 1.6 !important;
+        font-family: 'Noto Sans Bengali', 'Inter', sans-serif !important;
+        resize: vertical !important;
+    }
+    
+    .stTextArea>div>div>textarea:focus {
+        border-color: #8b5cf6 !important;
+        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2) !important;
+        outline: none !important;
     }
     
     /* Selectbox Styling */
@@ -383,6 +401,8 @@ SHARED_CSS = """
     .stTextArea>div>div>textarea::placeholder {
         color: #6b7280 !important;
         font-size: 0.8rem !important;
+        font-style: italic !important;
+        opacity: 0.7 !important;
     }
     
     .stTextInput label,
@@ -513,6 +533,12 @@ SHARED_CSS = """
             transform: translateY(-2px);
         }
         
+        /* Text area for tablet */
+        .stTextArea>div>div>textarea {
+            font-size: 0.95rem !important;
+            padding: 1rem !important;
+        }
+        
         /* Selectbox for tablet */
         .stSelectbox [data-baseweb="select"]>div {
             min-height: 48px !important;
@@ -608,6 +634,13 @@ SHARED_CSS = """
         .stButton>button {
             padding: 0.9rem 2rem;
             font-size: 1rem;
+        }
+        
+        /* Text area for desktop */
+        .stTextArea>div>div>textarea {
+            font-size: 1rem !important;
+            padding: 1.2rem !important;
+            line-height: 1.7 !important;
         }
         
         /* Selectbox for desktop */
