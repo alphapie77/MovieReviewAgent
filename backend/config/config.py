@@ -10,23 +10,31 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-# Project Root
-PROJECT_ROOT = Path(__file__).parent.parent.parent
+# Project Root - Deployment compatible
+PROJECT_ROOT = Path(__file__).parent.parent
 
-# Phase 1 & 2 Artifacts
-DATA_DIR = PROJECT_ROOT / "02_Phase1_DataEngineering" / "THESIS_PHASE1_BACKUP"
-MODEL_DIR = PROJECT_ROOT / "03_Phase2_ModelTraining"
+# Backend directories
+BACKEND_ROOT = PROJECT_ROOT
+DATA_DIR = BACKEND_ROOT
+MODEL_DIR = BACKEND_ROOT / "models"
 
 # Key Files
 CSV_FILE = DATA_DIR / "step3_clustered_data.csv"
-BANGLABERT_MODEL = MODEL_DIR / "THESIS_ADVANCED_MODEL_ONLY" / "best_advanced_model"
+BANGLABERT_MODEL = MODEL_DIR / "best_advanced_model"
+
+# Fallback to HuggingFace if local model not found
+if not BANGLABERT_MODEL.exists():
+    BANGLABERT_MODEL = "sagorsarker/bangla-bert-base"
 
 # Phase 3 Directories
-PHASE3_ROOT = PROJECT_ROOT / "03_Phase3_MultiAgent"
-LOGS_DIR = PHASE3_ROOT / "logs"
-TOOLS_DIR = PHASE3_ROOT / "tools"
-CONFIG_DIR = PHASE3_ROOT / "config"
-TESTS_DIR = PHASE3_ROOT / "tests"
+LOGS_DIR = BACKEND_ROOT / "logs"
+TOOLS_DIR = BACKEND_ROOT / "tools"
+CONFIG_DIR = BACKEND_ROOT / "config"
+TESTS_DIR = BACKEND_ROOT / "tests"
+
+# Create directories if not exist
+for dir_path in [LOGS_DIR, MODEL_DIR]:
+    dir_path.mkdir(parents=True, exist_ok=True)
 
 # API Configuration
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "")
