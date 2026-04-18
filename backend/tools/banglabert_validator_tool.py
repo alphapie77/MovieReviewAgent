@@ -39,47 +39,16 @@ class BanglaBERTValidatorTool(BaseTool):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.logger.info(f"Using device: {self.device}")
         
-        # Load tokenizer
+        # Load tokenizer from HuggingFace Hub
         self.logger.info("Loading BanglaBERT tokenizer...")
-        try:
-            # Check if local model exists
-            if isinstance(cfg.BANGLABERT_MODEL, Path) and cfg.BANGLABERT_MODEL.exists():
-                self.tokenizer = AutoTokenizer.from_pretrained(
-                    str(cfg.BANGLABERT_MODEL),
-                    local_files_only=True
-                )
-            else:
-                # Use base model tokenizer
-                self.tokenizer = AutoTokenizer.from_pretrained(cfg.BANGLABERT_TOKENIZER)
-        except Exception as e:
-            self.logger.warning(f"Failed to load tokenizer from model path: {e}")
-            # Fallback to base model
-            self.tokenizer = AutoTokenizer.from_pretrained(cfg.BANGLABERT_TOKENIZER)
+        self.tokenizer = AutoTokenizer.from_pretrained(cfg.BANGLABERT_TOKENIZER)
         
-        # Load trained model
+        # Load trained model from HuggingFace Hub
         self.logger.info(f"Loading trained model from {cfg.BANGLABERT_MODEL}")
-        
-        # Check if it's a local path or HuggingFace repo
-        if isinstance(cfg.BANGLABERT_MODEL, Path) and cfg.BANGLABERT_MODEL.exists():
-            # Local model
-            self.model = AutoModelForSequenceClassification.from_pretrained(
-                str(cfg.BANGLABERT_MODEL),
-                num_labels=3,
-                local_files_only=True
-            )
-        else:
-            # HuggingFace model (string path)
-            model_name = str(cfg.BANGLABERT_MODEL) if not isinstance(cfg.BANGLABERT_MODEL, str) else cfg.BANGLABERT_MODEL
-            
-            # If it looks like a file path, use base model instead
-            if '/' in model_name and not model_name.count('/') == 1:
-                self.logger.warning(f"Invalid model path: {model_name}, using base model")
-                model_name = "sagorsarker/bangla-bert-base"
-            
-            self.model = AutoModelForSequenceClassification.from_pretrained(
-                model_name,
-                num_labels=3
-            )
+        self.model = AutoModelForSequenceClassification.from_pretrained(
+            cfg.BANGLABERT_MODEL,
+            num_labels=3
+        )
         self.model.to(self.device)
         self.model.eval()
         
