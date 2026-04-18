@@ -1,0 +1,434 @@
+"""
+Single Review Generation Page
+Modern UI with complete error handling
+"""
+
+import streamlit as st
+import sys
+from pathlib import Path
+import json
+from datetime import datetime
+
+# Add backend
+sys.path.insert(0, str(Path(__file__).parent.parent.parent / "backend"))
+
+# Import shared theme
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from shared_theme import SHARED_CSS
+
+# Page config
+st.set_page_config(page_title="Single Review", page_icon="✍️", layout="wide")
+
+# Apply shared theme
+st.markdown(SHARED_CSS, unsafe_allow_html=True)
+
+# Initialize session
+if 'history' not in st.session_state:
+    st.session_state.history = []
+if 'total_generated' not in st.session_state:
+    st.session_state.total_generated = 0
+
+# Header
+st.markdown("""
+<div class="header-gradient">
+    <h1>✍️ Single Review Generation</h1>
+    <p>Generate persona-specific Bengali movie review</p>
+</div>
+""", unsafe_allow_html=True)
+
+# Input Section
+st.markdown("## 📝 Input")
+
+# Example plots dictionary
+examples = {
+    "Romantic": "একটি রোমান্টিক মুভি যেখানে দুই প্রেমিক বাধা পেরিয়ে মিলিত হয়। তাদের ভালোবাসা সমাজের সব বাধা ভেঙে দেয়।",
+    "Thriller": "শহরটার নাম নীলপুর। শান্ত শহরে হঠাৎ রহস্যজনক ঘটনা ঘটতে শুরু করে। একজন গোয়েন্দা সত্য উদঘাটন করতে আসে।",
+    "Action": "একজন সাধারণ মানুষ যখন তার পরিবারকে বাঁচাতে গিয়ে অপরাধীদের বিরুদ্ধে লড়াই করে। তার সাহস সবাইকে অবাক করে দেয়।"
+}
+
+# Example buttons - Show examples as info boxes instead
+with st.expander("📋 Example Plots - Copy and Paste"):
+    st.info("**📖 Romantic:**\n" + examples["Romantic"])
+    st.info("**🔍 Thriller:**\n" + examples["Thriller"])
+    st.info("**💥 Action:**\n" + examples["Action"])
+
+# Movie plot input - simple text area without value binding
+movie_plot = st.text_area(
+    "Movie Plot (Bengali/Banglish)",
+    height=150,
+    placeholder="উদাহরণ: একটি রোমান্টিক মুভি যেখানে দুই প্রেমিক মিলিত হয়...\n\nঅথবা: ekta romantic movie jekhane duijon premik mile jay...\n\nTip: Copy example from above and paste here!",
+    help="Enter movie plot in Bengali or Banglish. Minimum 20 characters required.",
+    key="movie_plot_input"
+)
+
+col1, col2 = st.columns(2)
+
+with col1:
+    persona = st.selectbox(
+        "Select Persona",
+        ["All 3 Personas", "Die-hard Fan", "Enthusiastic Casual", "Indifferent Casual"],
+        help="Choose the target persona for review generation"
+    )
+
+with col2:
+    max_retries = st.slider(
+        "Max Retries",
+        min_value=1,
+        max_value=5,
+        value=3,
+        help="Maximum retry attempts if validation fails"
+    )
+
+# Advanced options
+with st.expander("⚙️ Advanced Options"):
+    show_logs = st.checkbox("Show detailed logs", value=False)
+    save_to_history = st.checkbox("Save to history", value=True)
+
+st.markdown("---")
+
+# Generate button
+if st.button("🚀 Generate Review", type="primary", use_container_width=True):
+    
+    # Validation - minimum 200 words
+    if not movie_plot or len(movie_plot.strip()) < 20:
+        st.markdown("""
+        <div class="error-box">
+            <strong>❌ Error:</strong> Movie plot is too short. Please enter at least 20 characters.
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        # Count words
+        word_count = len(movie_plot.split())
+        if word_count < 200:
+            st.markdown(f"""
+            <div class="error-box">
+                <strong>❌ Plot Too Short:</strong> Your plot has only {word_count} words.<br>
+                <strong>Minimum required: 200 words</strong> for professional review generation.<br><br>
+                💡 <strong>Why?</strong> Short plots lead to generic reviews with hallucinated details. 
+                A detailed plot (200+ words) ensures the AI generates accurate, plot-specific reviews.
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            # Progress
+            progress_bar = st.progress(0)
+            status_text = st.empty()
+            
+            try:
+                # Step 1: Initialize
+                status_text.markdown("**Step 1/4:** Initializing agents...")
+                progress_bar.progress(25)
+                
+                from phase3_integration import generate_review
+                
+                # Step 2: Generate
+                if persona == "All 3 Personas":
+                    status_text.markdown(f"**Step 2/4:** Generating reviews for **all 3 personas**...")
+                    progress_bar.progress(50)
+                
+                from phase3_integration import generate_all_personas
+                result = generate_all_personas(movie_plot, max_retries)
+                
+                # Step 3: Validate
+                status_text.markdown("**Step 3/4:** Validating outputs...")
+                progress_bar.progress(75)
+                
+                # Step 4: Complete
+                status_text.markdown("**Step 4/4:** Finalizing...")
+                progress_bar.progress(100)
+                
+                # Clear progress
+                progress_bar.empty()
+                status_text.empty()
+                
+                # Check result
+                if result.get('success'):
+                    # Success
+                    st.markdown("""
+                    <div class="success-box">
+                        <strong>✅ Success!</strong> All 3 persona reviews generated successfully.
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    # Overall Metrics
+                    st.markdown("## 📊 Overall Metrics")
+                    
+                    col1, col2, col3, col4 = st.columns(4)
+                    
+                    with col1:
+                        total_attempts = sum(r.get('total_attempts', 0) for r in result.get('results', {}).values())
+                        st.markdown(f"""
+                        <div class="metric-box">
+                            <h3>{total_attempts}</h3>
+                            <p>Total Attempts</p>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    
+                    with col2:
+                        avg_score = sum(r.get('validation_score', 0) for r in result.get('results', {}).values()) / 3
+                        st.markdown(f"""
+                        <div class="metric-box">
+                            <h3>{avg_score:.3f}</h3>
+                            <p>Avg Score</p>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    
+                    with col3:
+                        success_count = sum(1 for r in result.get('results', {}).values() if r.get('success'))
+                        st.markdown(f"""
+                        <div class="metric-box">
+                            <h3>{success_count}/3</h3>
+                            <p>Success</p>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    
+                    with col4:
+                        total_chars = sum(len(r.get('final_review', '')) for r in result.get('results', {}).values())
+                        st.markdown(f"""
+                        <div class="metric-box">
+                            <h3>{total_chars}</h3>
+                            <p>Total Chars</p>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    
+                    # Individual Reviews
+                    st.markdown("## 📝 Generated Reviews")
+                    
+                    for persona_name, persona_result in result.get('results', {}).items():
+                        if persona_result.get('success'):
+                            score = persona_result.get('validation_score', 0)
+                            review = persona_result.get('final_review', '')
+                            attempts = persona_result.get('total_attempts', 0)
+                            
+                            st.markdown(f"""
+                            <div class="result-card">
+                                <h3>{persona_name}</h3>
+                                <p><strong>Score:</strong> {score:.3f} | <strong>Attempts:</strong> {attempts}</p>
+                                <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">{review}</p>
+                            </div>
+                            """, unsafe_allow_html=True)
+                    
+                    # Download
+                    st.markdown("## 💾 Download")
+                    
+                    col1, col2 = st.columns(2)
+                    
+                    with col1:
+                        json_data = json.dumps(result, ensure_ascii=False, indent=2)
+                        st.download_button(
+                            "📥 Download JSON",
+                            json_data,
+                            f"all_reviews_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
+                            "application/json",
+                            use_container_width=True
+                        )
+                    
+                    with col2:
+                        txt_data = "\n\n".join([
+                            f"{p}: {r.get('final_review', '')}" 
+                            for p, r in result.get('results', {}).items()
+                        ])
+                        st.download_button(
+                            "📥 Download TXT",
+                            txt_data,
+                            f"all_reviews_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
+                            "text/plain",
+                            use_container_width=True
+                        )
+                    
+                    # Save to history
+                    if save_to_history:
+                        st.session_state.history.append({
+                            'timestamp': datetime.now().isoformat(),
+                            'plot': movie_plot[:100] + "...",
+                            'persona': 'All 3 Personas',
+                            'result': result
+                        })
+                        st.session_state.total_generated += 3
+                
+                else:
+                    # Failed
+                    error_msg = result.get('error', 'Unknown error')
+                    
+                    st.markdown(f"""
+                    <div class="error-box">
+                        <strong>❌ Generation Failed</strong><br>
+                        {error_msg}
+                    </div>
+                    """, unsafe_allow_html=True)
+            
+            else:
+                status_text.markdown(f"**Step 2/4:** Generating review for **{persona}**...")
+                progress_bar.progress(50)
+                
+                result = generate_review(movie_plot, persona, max_retries)
+                
+                # Debug: Check result structure
+                st.write("DEBUG - Result keys:", list(result.keys()) if result else "None")
+                st.write("DEBUG - Success value:", result.get('success') if result else "No result")
+                
+                # Step 3: Validate
+                status_text.markdown("**Step 3/4:** Validating output...")
+                progress_bar.progress(75)
+                
+                # Step 4: Complete
+                status_text.markdown("**Step 4/4:** Finalizing...")
+                progress_bar.progress(100)
+                
+                # Clear progress
+                progress_bar.empty()
+                status_text.empty()
+                
+                # Check result
+                if result.get('success'):
+                    # Success
+                    st.markdown("""
+                    <div class="success-box">
+                        <strong>✅ Success!</strong> Review generated and validated successfully.
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    # Metrics
+                    st.markdown("## 📊 Metrics")
+                    
+                    col1, col2, col3, col4 = st.columns(4)
+                    
+                    with col1:
+                        st.markdown(f"""
+                        <div class="metric-box">
+                            <h3>{result.get('total_attempts', 0)}</h3>
+                            <p>Attempts</p>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    
+                    with col2:
+                        score = result.get('validation_score', 0)
+                        st.markdown(f"""
+                        <div class="metric-box">
+                            <h3>{score:.3f}</h3>
+                            <p>Score</p>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    
+                    with col3:
+                        predicted = result.get('predicted_persona', 'N/A')
+                        match = "✓" if predicted == persona else "✗"
+                        st.markdown(f"""
+                        <div class="metric-box">
+                            <h3>{match}</h3>
+                            <p>Match</p>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    
+                    with col4:
+                        review_len = len(result.get('final_review', ''))
+                        st.markdown(f"""
+                        <div class="metric-box">
+                            <h3>{review_len}</h3>
+                            <p>Characters</p>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    
+                    # Review
+                    st.markdown("## 📝 Generated Review")
+                    
+                    st.markdown(f"""
+                    <div class="result-card">
+                        <h3>{persona}</h3>
+                        <p style="font-size: 1.1rem; line-height: 1.8;">{result.get('final_review', '')}</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    # Download
+                    st.markdown("## 💾 Download")
+                    
+                    col1, col2 = st.columns(2)
+                    
+                    with col1:
+                        json_data = json.dumps(result, ensure_ascii=False, indent=2)
+                        st.download_button(
+                            "📥 Download JSON",
+                            json_data,
+                            f"review_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
+                            "application/json",
+                            use_container_width=True
+                        )
+                    
+                    with col2:
+                        txt_data = f"Persona: {persona}\nScore: {score:.3f}\n\nReview:\n{result.get('final_review', '')}"
+                        st.download_button(
+                            "📥 Download TXT",
+                            txt_data,
+                            f"review_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
+                            "text/plain",
+                            use_container_width=True
+                        )
+                    
+                    # Save to history
+                    if save_to_history:
+                        st.session_state.history.append({
+                            'timestamp': datetime.now().isoformat(),
+                            'plot': movie_plot[:100] + "...",
+                            'persona': persona,
+                            'result': result
+                        })
+                        st.session_state.total_generated += 1
+                    
+                else:
+                    # Failed
+                    error_msg = result.get('error', 'Unknown error')
+                    
+                    st.markdown(f"""
+                    <div class="error-box">
+                        <strong>❌ Generation Failed</strong><br>
+                        {error_msg}
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    # Check for quota error
+                    if 'quota' in error_msg.lower() or '429' in error_msg:
+                        st.markdown("""
+                        <div class="warning-box">
+                            <strong>⚠️ API Quota Exceeded</strong><br>
+                            Google Gemini free tier limit reached (20 requests/day).<br>
+                            Please try again tomorrow or upgrade your API plan.
+                        </div>
+                        """, unsafe_allow_html=True)
+                    
+                    # Show partial result if available
+                    if result.get('final_review'):
+                        st.markdown("### 📝 Generated Review (Not Validated)")
+                        st.info(result.get('final_review', ''))
+                
+                # Show logs
+                if show_logs and result.get('iteration_history'):
+                    with st.expander("📋 Detailed Logs"):
+                        for i, iteration in enumerate(result['iteration_history'], 1):
+                            st.write(f"**Attempt {i}:**")
+                            st.write(f"- Score: {iteration.get('score', 0):.3f}")
+                            st.write(f"- Passed: {iteration.get('passed', False)}")
+                            if iteration.get('feedback'):
+                                st.write(f"- Feedback: {iteration['feedback'][:200]}...")
+                            st.write("---")
+        
+        except Exception as e:
+            progress_bar.empty()
+            status_text.empty()
+            
+            st.markdown(f"""
+            <div class="error-box">
+                <strong>❌ System Error</strong><br>
+                {str(e)}
+            </div>
+            """, unsafe_allow_html=True)
+            
+            with st.expander("🔍 Error Details"):
+                import traceback
+                st.code(traceback.format_exc())
+
+# Footer
+st.markdown("---")
+st.markdown("""
+<div style="text-align: center; color: #666;">
+    <p>💡 Tip: Use clear and descriptive movie plots for best results</p>
+</div>
+""", unsafe_allow_html=True)
