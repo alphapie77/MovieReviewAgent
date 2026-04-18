@@ -12,6 +12,13 @@ from datetime import datetime
 # Add backend
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "backend"))
 
+# Download model if not exists
+try:
+    from download_model import download_model
+    download_model()
+except Exception as e:
+    print(f"Model download skipped: {e}")
+
 # Import shared theme
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from shared_theme import SHARED_CSS
