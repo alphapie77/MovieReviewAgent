@@ -304,14 +304,79 @@ SHARED_CSS = """
     
     /* Form Inputs - Mobile First */
     .stTextInput>div>div>input,
-    .stTextArea>div>div>textarea,
-    .stSelectbox>div>div>div {
+    .stTextArea>div>div>textarea {
         background: #ffffff !important;
         border: 2px solid #3b82f6 !important;
         color: #000000 !important;
         border-radius: 8px !important;
         font-size: 0.85rem !important;
         padding: 0.6rem !important;
+    }
+    
+    /* Selectbox Styling */
+    .stSelectbox>div>div {
+        background: #ffffff !important;
+        border: 2px solid #3b82f6 !important;
+        border-radius: 8px !important;
+    }
+    
+    .stSelectbox>div>div>div {
+        color: #000000 !important;
+        font-size: 0.85rem !important;
+        font-weight: 500 !important;
+        padding: 0.6rem !important;
+    }
+    
+    .stSelectbox [data-baseweb="select"] {
+        background: #ffffff !important;
+    }
+    
+    .stSelectbox [data-baseweb="select"]>div {
+        background: #ffffff !important;
+        border: 2px solid #3b82f6 !important;
+        border-radius: 8px !important;
+        min-height: 44px !important;
+    }
+    
+    .stSelectbox [data-baseweb="select"]>div:hover {
+        border-color: #8b5cf6 !important;
+        box-shadow: 0 0 0 1px #8b5cf6 !important;
+    }
+    
+    .stSelectbox [data-baseweb="select"]>div:focus-within {
+        border-color: #8b5cf6 !important;
+        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.3) !important;
+    }
+    
+    /* Dropdown Menu */
+    [data-baseweb="popover"] {
+        background: #ffffff !important;
+        border: 2px solid #3b82f6 !important;
+        border-radius: 8px !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    [data-baseweb="menu"] {
+        background: #ffffff !important;
+    }
+    
+    [role="option"] {
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-size: 0.85rem !important;
+        padding: 0.7rem 1rem !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    [role="option"]:hover {
+        background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%) !important;
+        color: #5b21b6 !important;
+    }
+    
+    [aria-selected="true"] {
+        background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%) !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
     }
     
     .stTextInput>div>div>input::placeholder,
@@ -448,6 +513,16 @@ SHARED_CSS = """
             transform: translateY(-2px);
         }
         
+        /* Selectbox for tablet */
+        .stSelectbox [data-baseweb="select"]>div {
+            min-height: 48px !important;
+        }
+        
+        [role="option"] {
+            font-size: 0.9rem !important;
+            padding: 0.8rem 1.2rem !important;
+        }
+        
         ::-webkit-scrollbar {
             width: 10px;
             height: 10px;
@@ -533,6 +608,16 @@ SHARED_CSS = """
         .stButton>button {
             padding: 0.9rem 2rem;
             font-size: 1rem;
+        }
+        
+        /* Selectbox for desktop */
+        .stSelectbox [data-baseweb="select"]>div {
+            min-height: 50px !important;
+        }
+        
+        [role="option"] {
+            font-size: 0.95rem !important;
+            padding: 0.9rem 1.5rem !important;
         }
     }
     
