@@ -80,6 +80,7 @@ python -m streamlit run Home.py
 - System architecture overview (4 agents)
 - 3 persona cards with details
 - Quick start buttons
+- **Model Info:** Using `shksabbir7/bengali-movie-review-classifier` from HuggingFace
 
 **Single Review Page:**
 - Text area for movie plot input
@@ -134,7 +135,23 @@ python -m streamlit run Home.py
 - ✅ Modern gradient background
 - ✅ Professional spacing
 
-### 🔧 Error Handling
+### 🛠️ Tech Stack
+
+**Backend:**
+- Phase 3 Multi-Agent System
+- BanglaBERT: `shksabbir7/bengali-movie-review-classifier` (HuggingFace Hub)
+- Google Gemini API
+- ChromaDB + LaBSE
+
+**Frontend:**
+- Streamlit 1.56+
+- Pandas, Plotly, Altair
+- Custom CSS (Glassmorphism)
+
+**Model:**
+- Trained BanglaBERT (87.49% accuracy)
+- Deployed on HuggingFace Hub
+- Public access for research
 
 **API Errors:**
 - ✅ Quota exceeded detection
@@ -170,11 +187,14 @@ python -m streamlit run Home.py
 **Local:**
 - ✅ Works on Windows
 - ✅ Works on localhost:8501
+- ✅ HuggingFace model auto-downloads on first run
 
-**Streamlit Cloud (Future):**
-- Ready for deployment
-- Free tier compatible
-- No code changes needed
+**Streamlit Cloud:**
+- ✅ Deployed and running
+- ✅ Model loads from HuggingFace Hub: `shksabbir7/bengali-movie-review-classifier`
+- ✅ No local model files needed
+- ✅ Free tier compatible
+- ✅ Automatic updates on git push
 
 ### 📝 Next Steps
 
